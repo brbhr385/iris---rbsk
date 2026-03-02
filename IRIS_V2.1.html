@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>IRIS V2.1</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
+:root{--bg:#0a0f1e;--s:#111827;--s2:#1a2235;--br:#1e2d45;--ac:#00d4ff;--ac2:#0088ff;--gn:#00ff88;--tx:#e8f0fe;--t2:#8899aa;--ub:#0d3b5e;--ib:#0f1f35;}
+body.sky{--bg:#e8f4fd;--s:#fff;--s2:#d0eaf8;--br:#a8d4f0;--ac:#0077cc;--ac2:#0055aa;--gn:#00994d;--tx:#0a2540;--t2:#4a7a99;--ub:#b8ddf5;--ib:#daeefa;}
+body.blk{--bg:#000;--s:#0a0a0a;--s2:#111;--br:#222;--ac:#00ff88;--ac2:#00cc66;--gn:#00d4ff;--tx:#e8e8e8;--t2:#555;--ub:#001a0d;--ib:#001a0d;}
+body.grn{--bg:#061209;--s:#0a1f10;--s2:#0f2a16;--br:#1a4025;--ac:#00ff88;--ac2:#00cc66;--gn:#00d4ff;--tx:#e0f5e8;--t2:#5a9a70;--ub:#0d3320;--ib:#0a2018;}
+body.pur{--bg:#0f0a1e;--s:#1a1030;--s2:#221540;--br:#331e5c;--ac:#cc88ff;--ac2:#aa55ff;--gn:#ff88cc;--tx:#f0e8ff;--t2:#9977bb;--ub:#2a1050;--ib:#1a0a35;}
+body.wht{--bg:#f0f4f8;--s:#fff;--s2:#e8eef5;--br:#ccd5e0;--ac:#0055cc;--ac2:#0033aa;--gn:#008844;--tx:#1a2332;--t2:#6b7a8d;--ub:#cce0ff;--ib:#e8eef5;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--tx);height:100dvh;display:flex;flex-direction:column;overflow:hidden;}
+.hdr{background:var(--s);border-bottom:1px solid var(--br);padding:10px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.logo{width:36px;height:36px;border-radius:50%;background:conic-gradient(#00d4ff,#0088ff,#00ff88,#00d4ff);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#0a0f1e;flex-shrink:0;}
+.hn{font-size:16px;font-weight:700;background:linear-gradient(90deg,var(--ac),var(--gn));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px;}
+.hs{font-size:10px;color:var(--t2);}
+.hi{flex:1;}
+.dot{width:8px;height:8px;border-radius:50%;background:#333;flex-shrink:0;transition:all .3s;}
+.dot.on{background:var(--gn);box-shadow:0 0 6px var(--gn);}
+.dot.busy{background:#ffaa00;}
+.ib{background:none;border:1px solid var(--br);color:var(--t2);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.bnav{background:var(--s);border-top:1px solid var(--br);display:flex;flex-shrink:0;}
+.bnt{flex:1;padding:10px 4px 8px;background:none;border:none;border-top:2px solid transparent;color:var(--t2);font-size:10px;font-family:'Outfit',sans-serif;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;transition:all .2s;}
+.bnt .ti{font-size:20px;}
+.bnt.on{color:var(--ac);border-top-color:var(--ac);}
+.pg{display:none;flex:1;flex-direction:column;overflow:hidden;}
+.pg.on{display:flex;}
+.scrl{flex:1;overflow-y:auto;padding:14px 12px 20px;}
+.stl{font-size:10px;color:var(--t2);letter-spacing:1px;font-weight:600;margin:14px 0 8px;}
+.stl:first-child{margin-top:0;}
+.scard{background:var(--s2);border:1px solid var(--br);border-radius:14px;padding:13px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:8px;transition:all .2s;}
+.scard:active{border-color:var(--ac);transform:scale(0.99);}
+.sci{font-size:26px;flex-shrink:0;}
+.sinfo{flex:1;}
+.sname{font-size:14px;font-weight:600;}
+.smeta{font-size:11px;color:var(--t2);margin-top:2px;}
+.sarr{color:var(--t2);font-size:18px;}
+.qg{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.qb{background:var(--s2);border:1px solid var(--br);border-radius:12px;padding:13px 10px;cursor:pointer;text-align:left;font-family:'Outfit',sans-serif;transition:all .2s;}
+.qb:active{border-color:var(--ac);}
+.qi{font-size:22px;margin-bottom:6px;}
+.ql{font-size:12px;font-weight:600;color:var(--tx);}
+.qd{font-size:10px;color:var(--t2);margin-top:2px;}
+.dhdr{background:var(--s);border-bottom:1px solid var(--br);padding:10px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.bbtn{background:none;border:none;color:var(--ac);font-size:22px;cursor:pointer;padding:0 4px;line-height:1;}
+.dtl{font-size:14px;font-weight:600;flex:1;}
+.trow{display:flex;gap:7px;overflow-x:auto;padding:10px 12px;border-bottom:1px solid var(--br);flex-shrink:0;scrollbar-width:none;}
+.trow::-webkit-scrollbar{display:none;}
+.tc{background:var(--s2);border:1px solid var(--br);color:var(--t2);padding:5px 13px;border-radius:20px;font-size:11px;cursor:pointer;white-space:nowrap;font-family:'Outfit',sans-serif;flex-shrink:0;transition:all .2s;}
+.tc.on{background:var(--ac);color:#0a0f1e;border-color:var(--ac);font-weight:700;}
+.arow{display:flex;gap:7px;overflow-x:auto;padding:8px 12px;flex-shrink:0;scrollbar-width:none;}
+.arow::-webkit-scrollbar{display:none;}
+.ab{background:var(--s2);border:1px solid var(--br);color:var(--tx);padding:7px 13px;border-radius:10px;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'Outfit',sans-serif;flex-shrink:0;transition:all .2s;}
+.ab:active{border-color:var(--ac);}
+.ab.pri{background:var(--ac2);border-color:var(--ac);color:#fff;}
+.dw{flex:1;overflow:auto;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{background:var(--s);color:var(--t2);padding:8px 10px;text-align:left;font-size:10px;letter-spacing:.5px;border-bottom:1px solid var(--br);position:sticky;top:0;white-space:nowrap;}
+td{padding:8px 10px;border-bottom:1px solid var(--br);white-space:nowrap;}
+tr:nth-child(even) td{background:rgba(255,255,255,.02);}
+.empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--t2);padding:40px;font-size:13px;}
+.msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;}
+.msg{display:flex;gap:8px;}
+.msg.u{flex-direction:row-reverse;}
+.av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:2px;}
+.av.i{background:conic-gradient(#00d4ff,#0088ff,#00ff88,#00d4ff);color:#0a0f1e;}
+.av.u{background:var(--ac2);color:#fff;}
+.bw{display:flex;flex-direction:column;max-width:calc(100% - 44px);}
+.bl{padding:9px 13px;border-radius:14px;line-height:1.6;font-size:13px;}
+.msg.iris .bl{background:var(--ib);border:1px solid var(--br);border-top-left-radius:4px;}
+.msg.u .bl{background:var(--ub);border:1px solid rgba(0,136,255,.3);border-top-right-radius:4px;}
+.bl strong{color:var(--ac);}
+.bl ul{padding-left:16px;margin:4px 0;}
+.bl li{margin:2px 0;}
+.mf{display:flex;align-items:center;gap:6px;margin-top:3px;padding:0 2px;}
+.mt{font-size:10px;color:var(--t2);}
+.cp{background:none;border:none;color:var(--t2);font-size:11px;cursor:pointer;padding:2px 6px;border-radius:4px;font-family:'Outfit',sans-serif;}
+.cp:active{color:var(--gn);}
+.typ{display:flex;gap:4px;align-items:center;padding:8px 0;}
+.typ span{width:5px;height:5px;border-radius:50%;background:var(--ac);animation:bnc 1.2s infinite;}
+.typ span:nth-child(2){animation-delay:.2s;}
+.typ span:nth-child(3){animation-delay:.4s;}
+@keyframes bnc{30%{transform:translateY(-5px);opacity:1}0%,60%,100%{opacity:.3;transform:none;}}
+.cia{background:var(--s);border-top:1px solid var(--br);padding:10px 12px;display:flex;gap:8px;align-items:flex-end;flex-shrink:0;}
+.iw{flex:1;background:var(--s2);border:1px solid var(--br);border-radius:18px;padding:8px 13px;display:flex;align-items:flex-end;gap:6px;}
+.iw:focus-within{border-color:var(--ac);}
+#ci{flex:1;background:none;border:none;color:var(--tx);font-size:13px;font-family:'Outfit',sans-serif;outline:none;resize:none;max-height:90px;line-height:1.5;min-height:20px;}
+#ci::placeholder{color:var(--t2);}
+.mic{background:none;border:none;color:var(--t2);font-size:17px;cursor:pointer;flex-shrink:0;}
+.snd{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--ac2),var(--ac));border:none;color:#0a0f1e;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ss{flex:1;overflow-y:auto;padding:14px 12px;}
+.sf{margin-bottom:14px;}
+.sl{font-size:11px;color:var(--t2);letter-spacing:.5px;font-weight:600;margin-bottom:5px;}
+.si{background:var(--s2);border:1px solid var(--br);color:var(--tx);padding:9px 12px;border-radius:10px;font-size:12px;outline:none;width:100%;font-family:monospace;}
+.si:focus{border-color:var(--ac);}
+textarea.si{min-height:70px;resize:vertical;}
+.sh{font-size:10px;color:var(--t2);margin-top:4px;}
+.tg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px;}
+.tb{border:2px solid transparent;border-radius:10px;padding:10px 4px;cursor:pointer;font-size:11px;font-weight:600;font-family:'Outfit',sans-serif;text-align:center;}
+.tb.on{border-color:var(--ac);}
+.svb{width:100%;padding:12px;border-radius:10px;border:none;font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;background:linear-gradient(135deg,var(--ac2),var(--ac));color:#0a0f1e;margin-top:4px;}
+.spin{width:18px;height:18px;border:2px solid var(--br);border-top-color:var(--ac);border-radius:50%;animation:rot .6s linear infinite;display:inline-block;vertical-align:middle;}
+@keyframes rot{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:75px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--gn);color:#0a0f1e;padding:8px 18px;border-radius:20px;font-size:12px;font-weight:700;opacity:0;transition:all .3s;z-index:999;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.apibanner{background:rgba(255,170,0,.15);border:1px solid rgba(255,170,0,.4);border-radius:10px;padding:10px 13px;font-size:12px;color:#ffaa00;margin-bottom:12px;display:none;}
+.apibanner.show{display:block;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="logo">I</div>
+  <div class="hi">
+    <div class="hn">IRIS</div>
+    <div class="hs" id="hs">RBSK Assistant • BRBHR 385 • v2.1</div>
+  </div>
+  <div class="dot" id="dot"></div>
+  <button class="ib" onclick="nav('settings',2)">⚙</button>
+</div>
+
+<!-- HOME -->
+<div class="pg on" id="pg-home">
+  <div class="scrl">
+    <div class="apibanner" id="apibanner">⚠️ Enter your Gemini API key in Settings to activate IRIS</div>
+    <div class="stl">YOUR SHEETS</div>
+    <div id="slist"></div>
+    <div class="stl">QUICK ACTIONS</div>
+    <div class="qg">
+      <button class="qb" onclick="ask('Generate complete Form III MHT monthly report from my RBSK data with all conditions and counts')"><div class="qi">📋</div><div class="ql">Generate MHT</div><div class="qd">Form III monthly report</div></button>
+      <button class="qb" onclick="ask('Which students or children still need Techo+ data entry? List by school or AW name')"><div class="qi">⏳</div><div class="ql">Pending Entries</div><div class="qd">Needs Techo entry</div></button>
+      <button class="qb" onclick="ask('What is current screening coverage? Screened vs target for AWs and schools separately')"><div class="qi">📊</div><div class="ql">Coverage</div><div class="qd">Screened vs target</div></button>
+      <button class="qb" onclick="ask('List all health conditions found this year with count for each condition')"><div class="qi">🏥</div><div class="ql">Conditions</div><div class="qd">All found conditions</div></button>
+      <button class="qb" onclick="ask('Which Anganwadis still have Term 2 screening pending?')"><div class="qi">🏠</div><div class="ql">AW Pending</div><div class="qd">Term 2 not done</div></button>
+      <button class="qb" onclick="ask('What is TD vaccine status for Class 5 and Class 10 students?')"><div class="qi">💉</div><div class="ql">TD Vaccine</div><div class="qd">Class 5 and 10</div></button>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL -->
+<div class="pg" id="pg-detail">
+  <div class="dhdr">
+    <button class="bbtn" id="bbtn">&#8592;</button>
+    <div class="dtl" id="dtl">Sheet</div>
+    <button class="ib" onclick="expCSV()">⬇</button>
+  </div>
+  <div class="trow" id="trow"></div>
+  <div class="arow" id="arow"></div>
+  <div class="dw" id="dw"><div class="empty">Select a tab above</div></div>
+</div>
+
+<!-- CHAT -->
+<div class="pg" id="pg-chat">
+  <div class="msgs" id="msgs"></div>
+  <div class="cia">
+    <div class="iw">
+      <textarea id="ci" placeholder="Ask IRIS anything..." rows="1"></textarea>
+      <button class="mic" id="mic">🎤</button>
+    </div>
+    <button class="snd" id="snd">&#10148;</button>
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div class="pg" id="pg-settings">
+  <div class="ss">
+    <div class="sf">
+      <div class="sl">GEMINI API KEY</div>
+      <input type="password" class="si" id="sk" placeholder="AIzaSy...">
+      <div class="sh">Get from aistudio.google.com → API Keys. Saved permanently in this file.</div>
+    </div>
+    <div class="sf">
+      <div class="sl">YOUR NAME</div>
+      <input type="text" class="si" id="sn" placeholder="Doctor">
+    </div>
+    <div class="sf">
+      <div class="sl">SERVICE ACCOUNT JSON</div>
+      <textarea class="si" id="sc"></textarea>
+      <div class="sh">Pre-loaded. Change only if you create a new key.</div>
+    </div>
+    <div class="sf">
+      <div class="sl">THEME</div>
+      <div class="tg">
+        <button class="tb" id="th0" style="background:#0a0f1e;color:#00d4ff;" onclick="setTheme('','th0')">🌙 Default</button>
+        <button class="tb" id="th1" style="background:#e8f4fd;color:#0077cc;" onclick="setTheme('sky','th1')">☀️ Sky Blue</button>
+        <button class="tb" id="th2" style="background:#000;color:#00ff88;" onclick="setTheme('blk','th2')">⚫ Black</button>
+        <button class="tb" id="th3" style="background:#061209;color:#00ff88;" onclick="setTheme('grn','th3')">🌿 Green</button>
+        <button class="tb" id="th4" style="background:#0f0a1e;color:#cc88ff;" onclick="setTheme('pur','th4')">🟣 Purple</button>
+        <button class="tb" id="th5" style="background:#f0f4f8;color:#0055cc;" onclick="setTheme('wht','th5')">🤍 White</button>
+      </div>
+    </div>
+    <button class="svb" onclick="saveSettings()">✓ Save Settings</button>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bnav">
+  <button class="bnt on" id="nav0" onclick="nav('home',0)"><div class="ti">🏠</div>Home</button>
+  <button class="bnt" id="nav1" onclick="nav('chat',1)"><div class="ti">💬</div>Chat</button>
+  <button class="bnt" id="nav2" onclick="nav('settings',2)"><div class="ti">⚙</div>Settings</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var CREDS_B64 = "eyJ0eXBlIjogInNlcnZpY2VfYWNjb3VudCIsICJwcm9qZWN0X2lkIjogIm15dGVjaG9ib3QiLCAicHJpdmF0ZV9rZXlfaWQiOiAiNjI3NDVjMTM0OGZkNGY2MjYxZTMwM2I1MzYxM2EwYTZhODY3ZWEzMyIsICJwcml2YXRlX2tleSI6ICItLS0tLUJFR0lOIFBSSVZBVEUgS0VZLS0tLS1cbk1JSUV2QUlCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktZd2dnU2lBZ0VBQW9JQkFRRHZ5SE9FUkR6NzNYWnpcbldRVEg4dkxGMnNxUUxJSmJiYmtCemRlMk1nUGh5dW1mTGNaVlU1UElFM0l6d2dGQW9xUHo1MUM4NExsR3pEbzlcbjhtd09UVmFlc0NnTG5oQVU5TEd4UEJSM2NtM3UxRnVOcjlOWGZGakIvbGhhcXBFWU9DQ2o0VGsrZ3QwWWNpUVlcbkdmQ3ZreUNQRGpLa1FyZytndEpIR1FsdjhBVUk2OFpTdXU0Uk95dERCdDlSOVpiM0FsbnBPUjVNMXA2VXFzZVpcbkRSMEdKakJjQTk2TnJ0UmNSQ0lxaHkrLzNLNy9QbFRhd290VFcrOTJZREFweTA5YU1BeDF3Qm85akkvSHNPVXVcblRXYjlsZU43OXlobjUvNU1IOWw4SlZuTUlHQ0pQUTFsdEpHMEt4d09rUkMySDNndVFVOGlBakEvZTVPRHpkNjdcbmlmS1JDcHRIQWdNQkFBRUNnZ0VBSDJNYkpwSjljOFZSaVZmUVlHYXFPMnYxc3E3MkxBYjQwMXVoTGtydHZINEFcbmhzTDBnSndvR1dYYzZtN1lGY3MwV3V1Zk9Kb25VVFVsTlR2K2JsWXIrSDhSUHQ2NTRZUmJuaStYSGtEdS9hR2Vcbmo3VnNSMlM4MlpLZStOU2dSRGlwOThtMk56czZFSEVnZUdjczNQbGlwd0hjeEg1WFQ4SWdId2tQOWRuSCtacTNcbndtNDFpQXplT3Y4ZFJybTZlSC9kVExhdFNvdzMxWXNzRVcweDNReDYvZ2FsbFpiYms3TFpYcDFjNC9MVjloemZcbnMwcHRTclRhMHlsMXVLc2Z1d2ZBWXpqRkk2aHhJcG9McmtvL3ZhUzV4OFMzamVsNGQ4TnNtcHZ2SkdrbnpmbTdcbjZyUkNrTmJlKzRpdGdaaXJybFVGcGd4Qm43SmxzaGFYd0lqTElYWE9BUUtCZ1FEOUVvYkpWYzRuLzdKZXk5R3lcbmUrVFhINWw1Tnc2V1VtNEdtRlZtYXNoVlpweDF6a3JDejU5UHdHd1QwcnNUalZxN29ydk5ySS9sWFBPeE9QWHNcbmhqK3BiRmJqU0RLS2RLNWF4eUc1NzBaRTg5TTdnMC82QXVlNG5WdCtoV3FiZ3k2VVJ5bVR3eFZIQ3Q0RmpZK2hcbk1waU55eWN2RVN4b0s3Z29lQTZSQnQ3azRRS0JnUUR5anBGOUhXUzFYR1dGLyt4UDEvM25vbTY1Zi9qU1ZSWkZcbkgzbnhXUGdUSlJuenpVT1E5TExCZ0J0bkFoRjV3V0cyMFJISTRMNnFJTzkwSW1LTFR1YThVRE5BSXdXR29FT2JcblEyd3hQS2FkU0pwYlJJaU1Lc2kvdytBVi9uSHNjTGxFM1NBS3dycDdrOUxzUzAvY2dPNGJmUDduWEFhWDFVcC9cbkVDTnJHZkJkSndLQmdCUE1TajBmK0ZQS3ZpS0tZV3BNSlBmclllOUlybHgyTUdOVnNZQ2tvKzJDYklVTzBXeHlcbkg2MTJpVDMzdzJqaEt4TDR4U1p1OUlibUFhNkFuVVNXc0E1S0NuWVhaTlRPRWdIS0NFcHFmSjNTVVZrYmlic3VcblZRQnRWd1lMMis0MGtnVkpsK2dXWCtqQjRlS2ZVM2d4NUJ0YnBFSWJYdFQ3YnBuRDRxZlgyTUloQW9HQWVQc0Rcbk5oUmpGdEp2RU5jRlZ3MjBac1J0MWJndXN6b2RVWHpScGI5cWZLSVV2N1d4N2FzZlBjUlg1cGp4Zm5rbDg3bHpcbjFXM0RxN2VodDVzdTY2ei9DUTQzZ2RYMSs2QVVHRzBZbWJaV3BEeUNRT045OSt1ZkZZYnRUZ3NMWjVNUjFYYzFcbmRDaU1PdmNRVFN1RE9jaFUrd0R0WXhoVGNZZkJFSDlNS3k5VTVDRUNnWUFxYSswMGZkZlZJUXlaM0pTRGNZQjlcbnYzekRGMzUyakVBK3MvajNsdHhLLzdBWUtkZUxJSGRabzhKOEY5ekRhSDA0WFhJMzlSWWpVRzVYY3hOY3lYbDdcbmFzdG9UenpnQkJSUTRjMDQvL01vbTB2dklESHlHNVordHN3aUdlQm5QcW1SejdWVDlka3J5eWtwMHVFOXAwaXFcbkxEUzhpdC9ZZTJhZEtiM2NRR2NMWEE9PVxuLS0tLS1FTkQgUFJJVkFURSBLRVktLS0tLVxuIiwgImNsaWVudF9lbWFpbCI6ICJ0ZWNoby1oZWxwZXJAbXl0ZWNob2JvdC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsICJjbGllbnRfaWQiOiAiMTE2NzYwMDM5MDIyNjQyNTM4NDU1IiwgImF1dGhfdXJpIjogImh0dHBzOi8vYWNjb3VudHMuZ29vZ2xlLmNvbS9vL29hdXRoMi9hdXRoIiwgInRva2VuX3VyaSI6ICJodHRwczovL29hdXRoMi5nb29nbGVhcGlzLmNvbS90b2tlbiIsICJhdXRoX3Byb3ZpZGVyX3g1MDlfY2VydF91cmwiOiAiaHR0cHM6Ly93d3cuZ29vZ2xlYXBpcy5jb20vb2F1dGgyL3YxL2NlcnRzIiwgImNsaWVudF94NTA5X2NlcnRfdXJsIjogImh0dHBzOi8vd3d3Lmdvb2dsZWFwaXMuY29tL3JvYm90L3YxL21ldGFkYXRhL3g1MDkvdGVjaG8taGVscGVyJTQwbXl0ZWNob2JvdC5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsICJ1bml2ZXJzZV9kb21haW4iOiAiZ29vZ2xlYXBpcy5jb20ifQ==";
+
+var SHEETS = [
+  {n:"new born 2025-26",              ic:"👶", type:"newborn"},
+  {n:"TARGET 385 2025-26",            ic:"🎯", type:"target"},
+  {n:"2025-2026 2nd Term",            ic:"🏠", type:"aw"},
+  {n:"DAILY REPORT FORMATE 2025-26",  ic:"📅", type:"daily"},
+  {n:"2025-26 School Screening",      ic:"🏫", type:"school"}
+];
+
+var apiKey='', creds=null, userName='Doctor';
+var token='', tokenExp=0;
+var cachedCryptoKey=null;
+var tokenPromise=null;
+var curFid='', curTab='', curData=[];
+var chatHist=[];
+var cache={};
+var isListening=false, recog=null;
+
+// ── BOOT ──────────────────────────────────
+window.addEventListener('DOMContentLoaded', function(){
+  // Load stored settings
+  apiKey  = localStorage.getItem('ik') || '';
+  userName= localStorage.getItem('in') || 'Doctor';
+  var theme = localStorage.getItem('ith') || '';
+
+  // Load creds
+  var sc = localStorage.getItem('ic');
+  if(sc){ try{ creds=JSON.parse(sc); }catch(e){} }
+  if(!creds){ try{ creds=JSON.parse(atob(CREDS_B64)); localStorage.setItem('ic',JSON.stringify(creds)); }catch(e){} }
+
+  // Populate settings fields
+  document.getElementById('sk').value = apiKey;
+  document.getElementById('sn').value = userName;
+  if(creds) document.getElementById('sc').value = JSON.stringify(creds,null,2);
+
+  applyTheme(theme);
+
+  if(apiKey && creds){
+    document.getElementById('dot').className='dot on';
+    document.getElementById('hs').textContent='Active • BRBHR 385 • '+userName+' • v2.1';
+  } else {
+    document.getElementById('apibanner').classList.add('show');
+  }
+
+  buildCards();
+
+  document.getElementById('bbtn').addEventListener('click', function(){ nav('home',0); });
+  document.getElementById('snd').addEventListener('click', sendChat);
+  document.getElementById('mic').addEventListener('click', toggleVoice);
+  document.getElementById('ci').addEventListener('keydown', function(e){
+    if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat();}
+  });
+  document.getElementById('ci').addEventListener('input', function(){
+    this.style.height='auto';
+    this.style.height=Math.min(this.scrollHeight,90)+'px';
+  });
+
+  setupVoice();
+  // Pre-warm token - try sessionStorage first (survives page refresh, not file reload)
+  var cachedTk = sessionStorage.getItem('iris_tk');
+  var cachedTkExp = parseInt(sessionStorage.getItem('iris_tkexp')||'0');
+  if(cachedTk && Date.now() < cachedTkExp - 300000){
+    token = cachedTk;
+    tokenExp = cachedTkExp;
+    cache = {}; // still need to load sheet list
+    setTimeout(preload, 200); // preload immediately since we have token
+  } else if(creds){
+    _fetchToken().then(function(t){
+      token=t;
+      sessionStorage.setItem('iris_tk', t);
+      sessionStorage.setItem('iris_tkexp', tokenExp.toString());
+    }).catch(function(){});
+  }
+  addIrisMsg('Namaste! 🌟 I am IRIS v2.1. Tap any sheet card to open it. Sheet tabs and data load in background for speed.');
+
+  // Pre-load all sheets in background after 1 second
+  if(creds){ setTimeout(preload, 1000); }
+});
+
+// ── NAVIGATION ────────────────────────────
+function nav(page, idx){
+  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
+  document.getElementById('pg-'+page).classList.add('on');
+  document.querySelectorAll('.bnt').forEach(function(b){b.classList.remove('on');});
+  document.getElementById('nav'+idx).classList.add('on');
+}
+
+// ── SHEET CARDS ───────────────────────────
+function buildCards(){
+  var list=document.getElementById('slist');
+  var html='';
+  for(var i=0;i<SHEETS.length;i++){
+    html+='<div class="scard" data-i="'+i+'">'+
+      '<div class="sci">'+SHEETS[i].ic+'</div>'+
+      '<div class="sinfo">'+
+        '<div class="sname">'+SHEETS[i].n+'</div>'+
+        '<div class="smeta" id="sm'+i+'">Tap to open</div>'+
+      '</div>'+
+      '<div class="sarr">›</div>'+
+    '</div>';
+  }
+  list.innerHTML=html;
+  list.addEventListener('click', function(e){
+    var card=e.target.closest('.scard');
+    if(card) openSheet(parseInt(card.getAttribute('data-i')));
+  });
+}
+
+// ── PRELOAD ALL SHEETS IN BACKGROUND ──────
+async function preload(){
+  try{
+    var tk=await getToken();
+    for(var i=0;i<SHEETS.length;i++){
+      try{
+        var files=await dFind(SHEETS[i].n,tk);
+        if(files.length){
+          var fid=files[0].id;
+          var tabs=await gTabs(fid,tk);
+          cache[i]={fid:fid,tabs:tabs};
+          var m=document.getElementById('sm'+i);
+          if(m) m.textContent=tabs.length+' tabs • Ready ✓';
+        }
+      }catch(e){}
+      // Small delay between requests to avoid rate limiting
+      await new Promise(function(r){setTimeout(r,300);});
+    }
+  }catch(e){}
+}
+
+// ── OPEN SHEET ────────────────────────────
+async function openSheet(idx){
+  var sheet=SHEETS[idx];
+  document.getElementById('dtl').textContent=sheet.ic+' '+sheet.n;
+  document.getElementById('arow').innerHTML='';
+  document.getElementById('dw').innerHTML='<div class="empty"><div class="spin"></div><div id="loadmsg">Connecting to Google...</div></div>';
+  var loadMsgs=['Connecting to Google...','Authenticating...','Finding sheet...','Almost ready...'];
+  var lmi=0;
+  var lmTimer=setInterval(function(){
+    lmi++;
+    var el=document.getElementById('loadmsg');
+    if(el&&lmi<loadMsgs.length) el.textContent=loadMsgs[lmi];
+    else clearInterval(lmTimer);
+  },4000);
+  nav('detail',-1);
+  document.querySelector('.bnav').style.display='none';
+
+  try{
+    var fid, tabs;
+    if(cache[idx]){
+      // INSTANT - use cached data, no waiting
+      fid=cache[idx].fid;
+      tabs=cache[idx].tabs;
+      document.getElementById('trow').innerHTML='';
+      buildTabs(tabs,fid,sheet.type);
+      buildActions(sheet.type);
+      var def=defTab(tabs,sheet.type);
+      // Token should already be warm from boot
+      var tk=await getToken();
+      loadTab(fid,def,tk);
+    } else {
+      document.getElementById('trow').innerHTML='<span class="spin"></span> Connecting...';
+      var tk=await getToken();
+      var files=await dFind(sheet.n,tk);
+      if(!files.length){toast('Sheet not found in Drive');nav('home',0);document.querySelector('.bnav').style.display='flex';return;}
+      fid=files[0].id;
+      tabs=await gTabs(fid,tk);
+      cache[idx]={fid:fid,tabs:tabs};
+      buildTabs(tabs,fid,sheet.type);
+      buildActions(sheet.type);
+      var def=defTab(tabs,sheet.type);
+      loadTab(fid,def,tk);
+    }
+    curFid=fid;
+  }catch(e){
+    document.getElementById('trow').innerHTML='<span style="color:#ff4466;font-size:12px;">'+e.message+'</span>';
+  }
+}
+
+document.addEventListener('click',function(e){
+  if(e.target.classList.contains('bbtn')||e.target.id==='bbtn'){
+    document.querySelector('.bnav').style.display='flex';
+  }
+});
+
+function defTab(tabs,type){
+  if(type==='daily') return tabs.find(function(t){return t==='PROG';})||tabs[tabs.length-1];
+  if(type==='school') return tabs.find(function(t){return ['Report','PROG','LINE_LIST','Sheet1'].indexOf(t)===-1;})||tabs[0];
+  return tabs[0];
+}
+
+function buildTabs(tabs,fid,type){
+  var row=document.getElementById('trow');
+  row.innerHTML='';
+  var def=defTab(tabs,type);
+  tabs.forEach(function(t){
+    var b=document.createElement('button');
+    b.className='tc'+(t===def?' on':'');
+    b.textContent=t;
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.tc').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on');
+      getToken().then(function(tk){loadTab(fid,t,tk);});
+    });
+    row.appendChild(b);
+  });
+}
+
+function buildActions(type){
+  var row=document.getElementById('arow');
+  row.innerHTML=
+    '<button class="ab pri" onclick="doMHT()">📋 MHT Report</button>'+
+    '<button class="ab" onclick="doSum()">📊 Summary</button>'+
+    '<button class="ab" onclick="doPend()">⏳ Pending</button>'+
+    '<button class="ab" onclick="doCond()">🏥 Conditions</button>';
+}
+
+async function loadTab(fid,tabName,tk){
+  curTab=tabName;
+  document.getElementById('dw').innerHTML='<div class="empty"><div class="spin"></div> Loading '+tabName+'...</div>';
+  try{
+    var rows=await sRead(fid,tabName+'!A1:W300',tk);
+    curData=rows;
+    clearInterval(lmTimer);
+    renderTable(rows);
+  }catch(e){
+    document.getElementById('dw').innerHTML='<div class="empty">❌ '+e.message+'</div>';
+  }
+}
+
+function renderTable(rows){
+  if(!rows||!rows.length){document.getElementById('dw').innerHTML='<div class="empty">📭 No data in this tab</div>';return;}
+  var h=rows[0], d=rows.slice(1).filter(function(r){return r.some(function(c){return c&&String(c).trim();});});
+  var html='<table><thead><tr>'+h.map(function(x){return '<th>'+esc(x)+'</th>';}).join('')+'</tr></thead><tbody>';
+  d.forEach(function(row){
+    html+='<tr>'+h.map(function(_,i){return '<td>'+esc(row[i]||'')+'</td>';}).join('')+'</tr>';
+  });
+  html+='</tbody></table>';
+  document.getElementById('dw').innerHTML=html;
+}
+
+function doMHT(){ask('Generate complete Form III MHT monthly report from tab: '+curTab+'. All conditions with counts, total screened, referred cases.');}
+function doSum(){ask('Summarise data in tab: '+curTab+'. Key numbers, issues, actions needed.');}
+function doPend(){ask('From tab: '+curTab+', which entries are pending Techo+ data entry?');}
+function doCond(){ask('From tab: '+curTab+', list all health conditions found and count for each.');}
+
+function expCSV(){
+  if(!curData.length){toast('No data loaded');return;}
+  var csv=curData.map(function(r){return r.map(function(c){return '"'+String(c||'').replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download=(curTab||'data')+'.csv';
+  a.click();
+  toast('Downloaded!');
+}
+
+// ── CHAT ──────────────────────────────────
+function ask(q){
+  nav('chat',1);
+  setTimeout(function(){sendPrompt(q);},100);
+}
+
+async function sendChat(){
+  var inp=document.getElementById('ci');
+  var text=inp.value.trim();
+  if(!text) return;
+  inp.value=''; inp.style.height='auto';
+  await sendPrompt(text);
+}
+
+async function sendPrompt(text){
+  if(!apiKey){toast('Add API key in Settings');nav('settings',2);return;}
+  addUserMsg(text);
+  chatHist.push({role:'user',parts:[{text:text}]});
+  showTyping();
+
+  var ctx='';
+  if(curData.length){
+    ctx='\n\n[DATA:'+curTab+']\n'+curData.slice(0,40).map(function(r){return r.filter(function(c){return c;}).join(' | ');}).filter(function(r){return r.trim();}).join('\n');
+  }
+
+  var sys='You are IRIS, AI agent for Team BRBHR 385 Bharuch Gujarat RBSK program. '+
+    'When sheet data provided give specific answers with real numbers. '+
+    'School Screening = one sheet one tab per school. 2nd Term = AW data tabs per AW T1 T2. Daily Report PROG = cumulative. '+
+    'K/C/O=known case no report. ?=suspected wait. ab=absent. '+
+    'AW Term1=Apr-Sep Term2=Oct-Mar. Schools once from June. TD vaccine Class 5 and 10. '+
+    'Concise bullet points. Reply in user language.';
+
+  var full=sys+'\n\n'+text+ctx;
+  var msgs=chatHist.slice(-6).concat([{role:'user',parts:[{text:full}]}]);
+  var models=['gemini-2.5-flash','gemini-2.0-flash','gemini-2.0-flash-lite'];
+  var reply='', lastErr='';
+
+  for(var i=0;i<models.length;i++){
+    try{
+      var res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+models[i]+':generateContent?key='+apiKey,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({contents:msgs,generationConfig:{temperature:0.6,maxOutputTokens:1200}})
+      });
+      if(!res.ok){lastErr=(await res.json()).error?.message||res.status;continue;}
+      var d=await res.json();
+      reply=d.candidates?.[0]?.content?.parts?.[0]?.text||'';
+      if(reply) break;
+    }catch(e){lastErr=e.message;}
+  }
+
+  removeTyping();
+  if(reply){addIrisMsg(reply);chatHist.push({role:'model',parts:[{text:reply}]});}
+  else{addIrisMsg('❌ '+lastErr);}
+}
+
+function addUserMsg(text){
+  var msgs=document.getElementById('msgs');
+  var d=document.createElement('div');
+  d.className='msg u';
+  var t=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  d.innerHTML='<div class="av u">👤</div><div class="bw"><div class="bl">'+esc(text)+'</div><div class="mf"><span class="mt">'+t+'</span></div></div>';
+  msgs.appendChild(d);
+  msgs.scrollTop=99999;
+}
+
+function addIrisMsg(text){
+  var msgs=document.getElementById('msgs');
+  var d=document.createElement('div');
+  d.className='msg iris';
+  var t=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  var id='b'+Date.now();
+  d.innerHTML='<div class="av i">I</div><div class="bw"><div class="bl" id="'+id+'">'+fmt(text)+'</div><div class="mf"><span class="mt">'+t+'</span><button class="cp" onclick="cpMsg(\''+id+'\',this)">📋 Copy</button></div></div>';
+  msgs.appendChild(d);
+  msgs.scrollTop=99999;
+}
+
+function cpMsg(id,btn){
+  var el=document.getElementById(id);
+  var text=el.innerText;
+  // Try modern clipboard first, fallback for local files
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(text).then(function(){
+      btn.textContent='✓ Copied';
+      setTimeout(function(){btn.textContent='📋 Copy';},2000);
+    }).catch(function(){ fallbackCopy(text,btn); });
+  } else {
+    fallbackCopy(text,btn);
+  }
+}
+function fallbackCopy(text,btn){
+  var ta=document.createElement('textarea');
+  ta.value=text;
+  ta.style.position='fixed';
+  ta.style.opacity='0';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try{
+    document.execCommand('copy');
+    btn.textContent='✓ Copied';
+    setTimeout(function(){btn.textContent='📋 Copy';},2000);
+  }catch(e){ toast('Copy failed'); }
+  document.body.removeChild(ta);
+}
+
+function showTyping(){
+  var msgs=document.getElementById('msgs');
+  var d=document.createElement('div');
+  d.id='typ';d.className='msg iris';
+  d.innerHTML='<div class="av i">I</div><div class="bw"><div class="bl"><div class="typ"><span></span><span></span><span></span></div></div></div>';
+  msgs.appendChild(d);msgs.scrollTop=99999;
+}
+function removeTyping(){var t=document.getElementById('typ');if(t)t.remove();}
+
+function fmt(text){
+  return esc(text)
+    .replace(/\*\*(.*?)\*\*/g,'<strong></strong>')
+    .replace(/^[•\-] (.+)$/gm,'<li></li>')
+    .replace(/(<li>[\s\S]*?<\/li>)/g,'<ul></ul>')
+    .replace(/\n/g,'<br>');
+}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+// ── GOOGLE AUTH ───────────────────────────
+async function getToken(){
+  // Return cached token if still valid (55 min buffer)
+  if(token && Date.now() < tokenExp - 300000) return token;
+  // Prevent parallel token requests
+  if(tokenPromise) return tokenPromise;
+  tokenPromise = _fetchToken();
+  try { token = await tokenPromise; } finally { tokenPromise = null; }
+  return token;
+}
+
+async function _fetchToken(){
+  if(!creds) throw new Error('No credentials. Go to Settings.');
+  var now=Math.floor(Date.now()/1000);
+  var b64u=function(o){return btoa(JSON.stringify(o)).replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');};
+  var inp=b64u({alg:'RS256',typ:'JWT'})+'.'+b64u({iss:creds.client_email,scope:'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.readonly',aud:'https://oauth2.googleapis.com/token',exp:now+3600,iat:now});
+  // Cache crypto key - importing is the slow part
+  if(!cachedCryptoKey){
+    var pem=creds.private_key.replace('-----BEGIN PRIVATE KEY-----','').replace('-----END PRIVATE KEY-----','').replace(/\s/g,'');
+    var kb=Uint8Array.from(atob(pem),function(c){return c.charCodeAt(0);});
+    cachedCryptoKey=await crypto.subtle.importKey('pkcs8',kb.buffer,{name:'RSASSA-PKCS1-v1_5',hash:'SHA-256'},false,['sign']);
+  }
+  var sb=await crypto.subtle.sign('RSASSA-PKCS1-v1_5',cachedCryptoKey,new TextEncoder().encode(inp));
+  var sig=btoa(String.fromCharCode.apply(null,new Uint8Array(sb))).replace(/=/g,'').replace(/\+/g,'-').replace(/\//g,'_');
+  var jwt=inp+'.'+sig;
+  var r=await fetch('https://oauth2.googleapis.com/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion='+jwt});
+  if(!r.ok) throw new Error('Google auth failed');
+  var d=await r.json();
+  tokenExp=Date.now()+d.expires_in*1000;
+  var tk=d.access_token;
+  // Cache in sessionStorage so refresh doesn't re-auth
+  try{
+    sessionStorage.setItem('iris_tk', tk);
+    sessionStorage.setItem('iris_tkexp', tokenExp.toString());
+  }catch(e){}
+  return tk;
+}
+
+async function dFind(name,tk){
+  var q=encodeURIComponent("name='"+name+"' and mimeType='application/vnd.google-apps.spreadsheet' and trashed=false");
+  var r=await fetch('https://www.googleapis.com/drive/v3/files?q='+q+'&fields=files(id,name)&pageSize=5',{headers:{Authorization:'Bearer '+tk}});
+  if(!r.ok) throw new Error('Drive error: '+r.status);
+  return (await r.json()).files||[];
+}
+
+async function gTabs(id,tk){
+  var r=await fetch('https://sheets.googleapis.com/v4/spreadsheets/'+id+'?fields=sheets.properties',{headers:{Authorization:'Bearer '+tk}});
+  if(!r.ok) throw new Error('Sheet error: '+r.status);
+  return ((await r.json()).sheets||[]).map(function(s){return s.properties.title;});
+}
+
+async function sRead(id,range,tk){
+  var r=await fetch('https://sheets.googleapis.com/v4/spreadsheets/'+id+'/values/'+encodeURIComponent(range),{headers:{Authorization:'Bearer '+tk}});
+  if(!r.ok) throw new Error('Read error: '+r.status);
+  return (await r.json()).values||[];
+}
+
+// ── SETTINGS ──────────────────────────────
+function saveSettings(){
+  var k=document.getElementById('sk').value.trim();
+  var n=document.getElementById('sn').value.trim()||'Doctor';
+  var c=document.getElementById('sc').value.trim();
+  if(c){try{creds=JSON.parse(c);localStorage.setItem('ic',c);}catch(e){toast('Invalid JSON');return;}}
+  apiKey=k;userName=n;token='';tokenExp=0;cachedCryptoKey=null;try{sessionStorage.removeItem('iris_tk');sessionStorage.removeItem('iris_tkexp');}catch(e){};
+  localStorage.setItem('ik',k);
+  localStorage.setItem('in',n);
+  if(k&&creds){
+    document.getElementById('dot').className='dot on';
+    document.getElementById('hs').textContent='Active • BRBHR 385 • '+n+' • v2.1';
+    document.getElementById('apibanner').classList.remove('show');
+    cache={};
+    setTimeout(preload,500);
+  }
+  toast('Saved!');
+  nav('home',0);
+}
+
+// ── THEME ─────────────────────────────────
+function setTheme(cls,btnId){
+  applyTheme(cls);
+  localStorage.setItem('ith',cls);
+  toast('Theme changed!');
+}
+function applyTheme(cls){
+  document.body.className=cls||'';
+  document.querySelectorAll('.tb').forEach(function(b){b.classList.remove('on');});
+  var map={'':'th0','sky':'th1','blk':'th2','grn':'th3','pur':'th4','wht':'th5'};
+  var b=document.getElementById(map[cls||'']||'th0');
+  if(b) b.classList.add('on');
+}
+
+// ── UTILS ─────────────────────────────────
+function toast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},2500);
+}
+
+// ── VOICE ─────────────────────────────────
+function setupVoice(){
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){document.getElementById('mic').style.display='none';return;}
+  recog=new SR();
+  recog.continuous=false;recog.interimResults=false;recog.lang='en-IN';
+  recog.onresult=function(e){document.getElementById('ci').value=e.results[0][0].transcript;stopListen();sendChat();};
+  recog.onerror=recog.onend=stopListen;
+}
+function toggleVoice(){isListening?stopListen():startListen();}
+function startListen(){if(!recog)return;isListening=true;recog.start();document.getElementById('mic').textContent='🔴';}
+function stopListen(){if(!recog)return;isListening=false;try{recog.stop();}catch(e){}document.getElementById('mic').textContent='🎤';}
+</script>
+</body>
+</html>
